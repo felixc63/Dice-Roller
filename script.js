@@ -9,6 +9,8 @@ const coloredText = document.getElementById("coloredText");
 const settings = document.getElementById("settings");
 const tinyDots = document.getElementsByClassName("tiny-dot");
 const dotContainer = document.getElementById("dot-container");
+const statsContainer = document.getElementById("stats-container");
+const closeBtn = document.getElementById("close");
 
 
 let generatedNums = [];
@@ -30,9 +32,12 @@ hourGlass.style.width = "450px";
 hourGlass.src = "images/hourglass.png";
 dice.appendChild(hourGlass);
 
+closeBtn.onclick = function(event){
+    event.preventDefault();
+    statsContainer.style.visibility = "hidden";
+}
 
 async function rollDice(){
-    dotContainer.style.width = "400px";
     if(rollInput.value < 1){
         alert("Please input 1 or more rolls");
         return;
@@ -40,6 +45,7 @@ async function rollDice(){
     generatedNums = [];
     frequencyOfNums = [0, 0, 0, 0, 0, 0];
     probabilities = [0, 0, 0, 0, 0, 0];
+    dotContainer.style.width = "400px";
     dice.onclick = null; //To prevent spamming of the dice, disables clicks until the end of the function
     rollInput.readOnly = true;
     dice.style.backgroundColor = "red";
@@ -82,6 +88,15 @@ async function rollDice(){
         generatedNums.push(rand);
         frequencyOfNums[rand-1]++;
     }
+    //Actual Calculations
+    statisticsCalculation();
+    console.log("Generated Numbers:", generatedNums);
+    console.log("Frequency of Numbers:", frequencyOfNums);
+    console.log("Mean:", mean);
+    console.log("Median:", median);
+    console.log("Mode:", mode);
+    console.log("Standard Deviation:", standardDeviation);
+    console.log("Probabilities:", probabilities);
     dice.onclick = function(event){ //Sets the click function back
         event.preventDefault();
         rollDice();
@@ -142,6 +157,55 @@ function diceCalculation(){
     return Math.floor(Math.random()*6)+1;
 }
 
+function statisticsCalculation(){
+    let totalVal = 0;
+    for(let i = 0; i < frequencyOfNums.length; i++){
+        totalVal += frequencyOfNums[i]*(i+1);
+    }
+
+
+    //Mean
+    mean = totalVal/rollInput.value;
+
+
+    //Median
+    let sorted = generatedNums.slice().sort((a, b) => a - b);
+    let length = sorted.length;
+    // If the length is odd, return the middle element
+    if(length % 2 !== 0) {
+        median = sorted[Math.floor(length / 2)];
+    }else{
+        // If the length is even, return the average of the two middle elements
+        const middle1 = sorted[length / 2 - 1];
+        const middle2 = sorted[length / 2];
+        median = (middle1 + middle2) / 2;
+    }
+
+
+    //Mode
+    let largest = frequencyOfNums[0];
+    mode = [1];
+    for (let i = 1; i < frequencyOfNums.length; i++) {
+        if (frequencyOfNums[i] > largest) {
+            largest = frequencyOfNums[i];
+            mode = [i + 1];
+        } else if (frequencyOfNums[i] == largest) {
+            mode.push(i + 1);
+        }
+    }
+
+
+    //Standard Deviation
+    const squaredDeviations = generatedNums.map(num => Math.pow(num - mean, 2));
+    const meanSquaredDeviations = squaredDeviations.reduce((sum, squaredDeviation) => sum + squaredDeviation, 0)/generatedNums.length;
+    standardDeviation = Math.sqrt(meanSquaredDeviations);
+
+
+    //Probabilities
+    for(let i = 0; i < frequencyOfNums.length; i++){
+        probabilities[i] = (Math.round((frequencyOfNums[i]/rollInput.value)*10000)/100) + "%";
+    }
+}
 
 function checkSpeedBox(){
     if(speedCheckBox.checked == true){//2x speed

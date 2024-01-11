@@ -10,42 +10,54 @@
     <script src="script.js" async></script>
 </head>
 <body>
-    <div id="title-container">
-        <div>
-            <div class="tiny-dot"></div>
-            <div class="tiny-dot"></div>
-            <div class="tiny-dot"></div>
+    <div id="main-container">
+        <div id="title-container">
+            <div>
+                <div class="tiny-dot"></div>
+                <div class="tiny-dot"></div>
+                <div class="tiny-dot"></div>
+            </div>
+            <h1 class="title">Dice Roller</h1>
+            <div>
+                <div class="tiny-dot"></div>
+                <div class="tiny-dot"></div>
+                <div class="tiny-dot"></div>
+            </div>
         </div>
-        <h1 class="title">Dice Roller</h1>
+        <h2>Get various statistics based on your dice rolls!</h2>
+        <h3 id="coloredText" class="color">Click the Dice to Roll</h3>
+        <div id="dice">
+            <div id="dot-container"></div>
+        </div>
+        <fieldset id="settings">
+            <legend>Settings:</legend>
+            <label>Number of rolls:</label>
+            <input id="number-of-rolls" type="number" min="1">
+            <div id="checkbox-container">
+                <div>
+                    <input id="speed" type="checkbox">
+                    <label for="speed">2x Speed</label>
+                </div>
+                <div>
+                    <input id="bar" type="checkbox">
+                    <label for="bar">Bar Graph</label>
+                </div>
+                <div>
+                    <input id="pie" type="checkbox">
+                    <label for="pie">Pie Chart</label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    
+    <div id="stats-container">
         <div>
-            <div class="tiny-dot"></div>
-            <div class="tiny-dot"></div>
-            <div class="tiny-dot"></div>
+            <label id="stats-title"></label>
+        </div>
+        <div id="tab">
+            <div>Statistics</div>
+            <label id="close">&times;</label>
         </div>
     </div>
-    <h2>Get various statistics based on your dice rolls!</h2>
-    <h3 id="coloredText" class="color">Click the Dice to Roll</h3>
-    <div id="dice">
-        <div id="dot-container"></div>
-    </div>
-    <fieldset id="settings">
-        <legend>Settings:</legend>
-        <label>Number of rolls:</label>
-        <input id="number-of-rolls" type="number" min="1">
-        <div id="checkbox-container">
-            <div>
-                <input id="speed" type="checkbox">
-                <label for="speed">2x Speed</label>
-            </div>
-            <div>
-                <input id="bar" type="checkbox">
-                <label for="bar">Bar Graph</label>
-            </div>
-            <div>
-                <input id="pie" type="checkbox">
-                <label for="pie">Pie Chart</label>
-            </div>
-        </div>
-    </fieldset>
 </body>
 </html>
