@@ -8,6 +8,8 @@
     <title>Dice Roller</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" async></script>
+    <!-- Chart.js API -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
 </head>
 <body>
     <div id="main-container">
@@ -38,25 +40,28 @@
                     <input id="speed" type="checkbox">
                     <label for="speed">2x Speed</label>
                 </div>
-                <div>
-                    <input id="bar" type="checkbox">
-                    <label for="bar">Bar Graph</label>
-                </div>
-                <div>
-                    <input id="pie" type="checkbox">
-                    <label for="pie">Pie Chart</label>
-                </div>
             </div>
         </fieldset>
     </div>
     
-    <div id="stats-container">
+    <div id="stats-window">
         <div>
             <label id="stats-title"></label>
         </div>
         <div id="tab">
             <div>Statistics</div>
             <label id="close">&times;</label>
+        </div>
+        <div id="stats-container">
+            <table id="stats-table">
+                <tr>
+                    <th id="info"></th>
+                </tr>
+            </table>
+            <div id="graph-container">
+                <canvas id="bar-graph"></canvas>
+                <canvas id="pie-chart"></canvas>
+            </div>
         </div>
     </div>
 </body>

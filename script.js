@@ -3,15 +3,15 @@ const body = document.querySelector("body");
 const dice = document.getElementById("dice");
 const rollInput = document.getElementById("number-of-rolls");
 const speedCheckBox = document.getElementById("speed");
-const barCheckBox = document.getElementById("bar");
-const pieCheckBox = document.getElementById("pie");
 const coloredText = document.getElementById("coloredText");
 const settings = document.getElementById("settings");
 const tinyDots = document.getElementsByClassName("tiny-dot");
 const dotContainer = document.getElementById("dot-container");
-const statsContainer = document.getElementById("stats-container");
+const statsWindow = document.getElementById("stats-window");
 const closeBtn = document.getElementById("close");
-
+const info = document.getElementById("info");
+// const barGraphContainer = document.getElementById("bar-graph-container");
+// const pieChartContainer = document.getElementById("pie-chart-container");
 
 let generatedNums = [];
 let frequencyOfNums = [0, 0, 0, 0, 0, 0];
@@ -26,16 +26,10 @@ let timeToRoll = 1000;
 let rotated360 = false;
 let previous = 0;
 
-
 let hourGlass = document.createElement("img");
 hourGlass.style.width = "450px";
 hourGlass.src = "images/hourglass.png";
 dice.appendChild(hourGlass);
-
-closeBtn.onclick = function(event){
-    event.preventDefault();
-    statsContainer.style.visibility = "hidden";
-}
 
 async function rollDice(){
     if(rollInput.value < 1){
@@ -97,6 +91,23 @@ async function rollDice(){
     console.log("Mode:", mode);
     console.log("Standard Deviation:", standardDeviation);
     console.log("Probabilities:", probabilities);
+    //Show all statistics on the statistics window
+    info.innerHTML = ""; //Clear
+    let meanStat = document.createElement("p"), medianStat = document.createElement("p"), modeStat = document.createElement("p"), standardDeviationStat = document.createElement("p"), probabilitiesStat = document.createElement("p");
+    meanStat.innerText = `Mean: ${mean}`; 
+    info.appendChild(meanStat);
+    medianStat.innerText = `Median: ${median}`;
+    info.appendChild(medianStat);
+    modeStat.innerText = `Mode: ${mode}`;
+    info.appendChild(modeStat);
+    standardDeviationStat.innerText = `Standard Deviation: ${standardDeviation}`;
+    info.appendChild(standardDeviationStat);
+    probabilitiesStat.innerText = `Probabilities: \n1. ${probabilities[0]}%\n2. ${probabilities[1]}%\n3. ${probabilities[2]}%\n4. ${probabilities[3]}%\n5. ${probabilities[4]}%\n6. ${probabilities[5]}%`;
+    info.appendChild(probabilitiesStat);
+
+    //Draw Graphs
+    await drawGraphs();
+
     dice.onclick = function(event){ //Sets the click function back
         event.preventDefault();
         rollDice();
@@ -110,6 +121,8 @@ async function rollDice(){
     for(let i = 0; i < tinyDots.length; i++){
         tinyDots[i].style.backgroundColor = "red";
     }
+    await delay(100);
+    statsWindow.style.visibility = "visible";
 }
 
 
@@ -165,7 +178,7 @@ function statisticsCalculation(){
 
 
     //Mean
-    mean = totalVal/rollInput.value;
+    mean = (Math.round((totalVal/rollInput.value)*100))/100;
 
 
     //Median
@@ -198,12 +211,12 @@ function statisticsCalculation(){
     //Standard Deviation
     const squaredDeviations = generatedNums.map(num => Math.pow(num - mean, 2));
     const meanSquaredDeviations = squaredDeviations.reduce((sum, squaredDeviation) => sum + squaredDeviation, 0)/generatedNums.length;
-    standardDeviation = Math.sqrt(meanSquaredDeviations);
+    standardDeviation = (Math.round(Math.sqrt(meanSquaredDeviations)*100))/100;
 
 
     //Probabilities
     for(let i = 0; i < frequencyOfNums.length; i++){
-        probabilities[i] = (Math.round((frequencyOfNums[i]/rollInput.value)*10000)/100) + "%";
+        probabilities[i] = (Math.round((frequencyOfNums[i]/rollInput.value)*10000)/100);
     }
 }
 
@@ -216,6 +229,44 @@ function checkSpeedBox(){
         dice.style.transition = "1s";
         timeToRoll = 1000;
     }
+}
+
+let barGraph;
+let pieChart;
+
+async function drawGraphs(){
+    const bar = document.getElementById("bar-graph");
+    const pie = document.getElementById("pie-chart");
+
+    barGraph = new Chart(bar, {
+        type: "bar",
+        data: {
+            labels: [1, 2, 3, 4, 5, 6],
+            datasets: [{
+                label: "Frequency",
+                data: [frequencyOfNums[0], frequencyOfNums[1], frequencyOfNums[2], frequencyOfNums[3], frequencyOfNums[4], frequencyOfNums[5]],
+                backgroundColor: [
+                    "rgb(54, 162, 235)",
+                    "rgb(255, 99, 132)",
+                    "rgb(255, 159, 64)",
+                    "rgb(255, 205, 86",
+                    "rgb(75, 192, 192)",
+                    "rgb(153, 102, 255)"
+                ]
+            }]
+        }
+    });
+
+    pieChart = new Chart(pie, {
+        type: "pie",
+        data: {
+            labels: [1, 2, 3, 4, 5, 6],
+            datasets: [{
+                label: "Frequency",
+                data: [frequencyOfNums[0], frequencyOfNums[1], frequencyOfNums[2], frequencyOfNums[3], frequencyOfNums[4], frequencyOfNums[5]]
+            }]
+        }
+    })
 }
 
 
@@ -242,4 +293,11 @@ rollInput.oninput = function(event){
 speedCheckBox.onchange = function(event){
     event.preventDefault();
     checkSpeedBox();
+}
+
+closeBtn.onclick = function(event){
+    event.preventDefault();
+    statsWindow.style.visibility = "hidden";
+    barGraph.destroy();
+    pieChart.destroy();
 }

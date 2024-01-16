@@ -222,7 +222,7 @@ body{
     box-shadow: 0 0 100px rgba(255, 255, 255, 0.8);
 }
 
-#stats-container{
+#stats-window{
     width: 90%;
     height: 90%;
     border-radius: 3%;
@@ -230,6 +230,7 @@ body{
     box-shadow: 0 0 100px rgba(255, 255, 255, 0.8);
     position: absolute;
     background-color: black;
+    visibility: hidden;
 }
 
 #main-container{
@@ -261,4 +262,32 @@ body{
     width: 100%;
     position: absolute;
     color: white;
+}
+
+#stats-table{
+    border: 1px solid white;
+    color: white;
+}
+
+#stats-table table{
+    border: 1px solid white;
+    color: white;
+}
+
+#stats-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#bar-graph-container{
+    width: 150px;
+}
+
+#graph-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
 }
