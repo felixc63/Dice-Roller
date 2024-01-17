@@ -226,7 +226,6 @@ body{
     width: 90%;
     height: 90%;
     border-radius: 3%;
-    transition: 2s ease-in-out;
     box-shadow: 0 0 100px rgba(255, 255, 255, 0.8);
     position: absolute;
     background-color: black;
@@ -289,5 +288,20 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#bar-graph-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 500px;
+    height: 500px;
+}
+
+#pie-chart-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 350px;
 }

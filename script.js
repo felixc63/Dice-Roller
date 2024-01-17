@@ -10,8 +10,6 @@ const dotContainer = document.getElementById("dot-container");
 const statsWindow = document.getElementById("stats-window");
 const closeBtn = document.getElementById("close");
 const info = document.getElementById("info");
-// const barGraphContainer = document.getElementById("bar-graph-container");
-// const pieChartContainer = document.getElementById("pie-chart-container");
 
 let generatedNums = [];
 let frequencyOfNums = [0, 0, 0, 0, 0, 0];
@@ -84,13 +82,6 @@ async function rollDice(){
     }
     //Actual Calculations
     statisticsCalculation();
-    console.log("Generated Numbers:", generatedNums);
-    console.log("Frequency of Numbers:", frequencyOfNums);
-    console.log("Mean:", mean);
-    console.log("Median:", median);
-    console.log("Mode:", mode);
-    console.log("Standard Deviation:", standardDeviation);
-    console.log("Probabilities:", probabilities);
     //Show all statistics on the statistics window
     info.innerHTML = ""; //Clear
     let meanStat = document.createElement("p"), medianStat = document.createElement("p"), modeStat = document.createElement("p"), standardDeviationStat = document.createElement("p"), probabilitiesStat = document.createElement("p");
@@ -155,7 +146,6 @@ async function rotateDice(){
         }else if(rand == 6){
             dotContainer.classList.add("six-sided");
         }
-        console.log(`Rand: ${rand}`);
         for(let j = 0; j < rand; j++){
             let dot = document.createElement("div");
             dot.classList.add("dot");
@@ -222,7 +212,6 @@ function statisticsCalculation(){
 
 function checkSpeedBox(){
     if(speedCheckBox.checked == true){//2x speed
-        console.log('hello');
         dice.style.transition = "0.5s";
         timeToRoll = 500;
     }else{//Revert
@@ -238,8 +227,13 @@ async function drawGraphs(){
     const bar = document.getElementById("bar-graph");
     const pie = document.getElementById("pie-chart");
 
+    Chart.defaults.backgroundColor = "white";
+    Chart.defaults.borderColor = "#F8EEEC";
+    Chart.defaults.color = "white";
+
     barGraph = new Chart(bar, {
         type: "bar",
+        color: "white",
         data: {
             labels: [1, 2, 3, 4, 5, 6],
             datasets: [{
@@ -256,6 +250,8 @@ async function drawGraphs(){
             }]
         }
     });
+
+    
 
     pieChart = new Chart(pie, {
         type: "pie",
